@@ -1,10 +1,12 @@
 from GameControler import *
+from Menu.Menus import *
 from Network.client import *
-c = Client()
+# c = Client()
 
 pygame.init()
-pygame.display.set_caption("植物方")
-GCtrler = GameControler('PLs')
+pygame.display.set_caption("数媒1902丁昊天 - 毕业设计：PVZ")
+menuCtrler = MenuControler()
+# gameCtrler = GameControler('PLs')
 
 def main():
     while True:
@@ -13,12 +15,15 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                QUIT()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 GameData['mouse_data'][1] = event.button
 
-        GCtrler.update(c)
+        if GameData['MODE'] == 'menu':
+            menuCtrler.update()
+        elif GameData['MODE'] == 'PLs':
+            pass
+            # gameCtrler.update(c)
 
         # 总刷新与收尾
         pygame.display.flip()

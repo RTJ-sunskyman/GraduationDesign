@@ -13,7 +13,8 @@ C_W, C_H        = (100, 100)                    # 格子宽高
 MAP_X2, MAP_Y2  = (MAP_X1+9*C_W, MAP_Y1+5*C_H)  # 地图右下角
 
 # 动态数据
-GameData = {'money': 1000,
+GameData = {'MODE': 'menu',
+            'money': 1000,
             'status': 'self.gamerun',
             'mouse_data': [[0, 0], 0],  # 0表示无行为；1表示按了一次左键；3表示按了一次右键
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
@@ -72,6 +73,10 @@ def r_c2p(r: int, c: int) -> [int, int]:
     :return: 格子中心坐标
     """
     return MAP_X1+(c+0.5)*C_W, MAP_Y1+(r+0.5)*C_H
+
+def QUIT():
+    pygame.quit()
+    sys.exit()
 
 # 自定义类
 class mySprite:
