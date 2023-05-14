@@ -7,7 +7,7 @@ class Button:
 
     def __init__(self, text, pos, size):
         # 核心属性
-        self.pressed = False            # 按压判断
+        self.response = 0
         self.status = 1                 # status=1,一般状态；status=0,按下状态
         self.original_y_pos = pos[1]    # 原始y位置
 
@@ -20,7 +20,7 @@ class Button:
         self.dn_color = '#354B5E'
 
         # 按钮文字
-        text_font = pygame.font.Font('assets/郑庆科黄油体.TTF', 20)
+        text_font = pygame.font.Font('Assets/郑庆科黄油体.TTF', 20)
         self.text_surf = text_font.render(text, True, '#FFFFFF')
         self.text_rect = self.text_surf.get_rect(center=self.up_rect.center)
 
@@ -51,17 +51,15 @@ class Button:
             self.up_color = '#D74B4B'
             # 当鼠标左键处于按下状态时
             if mouse_presses[0] == 1:
-                self.pressed = True
                 self.status = 0
             # 当鼠标左键处于悬浮状态时，若pressed=true，说明左键弹起
-            elif self.pressed:
+            elif self.status == 0:
                 print('click')
+                self.response += 1
                 self.status = 1
-                self.pressed = False
         else:
             self.up_color = '#475F77'
             self.status = 1
-            self.pressed = False
 
     def update(self, screen):
         self.check_click()
