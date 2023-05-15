@@ -1,6 +1,5 @@
-# from codes.Map import *
-# from codes.SeedBank import *
-from Codes.Basic.Config import *
+from Codes.Map import *
+from Codes.SeedBank import *
 
 class GameControler:
     def __init__(self, Mode):
