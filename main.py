@@ -1,5 +1,5 @@
 from GameControler import *
-from Menu.Menus import *
+from Menu.MenuControler import *
 from Network.client import *
 # c = Client()
 

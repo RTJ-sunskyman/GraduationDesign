@@ -1,4 +1,5 @@
 import pygame
+pygame.init()
 import sys
 import os
 from threading import Thread
@@ -11,12 +12,13 @@ SB_X, SB_Y      = (50, 0)                       # 卡槽左上角坐标
 MAP_X1, MAP_Y1  = (100, 100)                    # 地图左上角
 C_W, C_H        = (100, 100)                    # 格子宽高
 MAP_X2, MAP_Y2  = (MAP_X1+9*C_W, MAP_Y1+5*C_H)  # 地图右下角
+text_font = pygame.font.Font('Assets/郑庆科黄油体.TTF', 20)
 
 # 动态数据
 GameData = {'MODE': 'menu',
             'Menu': 'self.menu_main',
             'money': 1000,
-            'status': 'self.gamerun',
+            'pressed': 'self.gamerun',
             'mouse_data': [[0, 0], 0],  # 0表示无行为；1表示按了一次左键；3表示按了一次右键
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
             'ZBs': [0, False, False],
@@ -57,7 +59,8 @@ def draw_text(content: str, size: int, color) -> pygame.Surface:
     """
     pygame.font.init()
     font = pygame.font.SysFont('kaiti', size)
-    text = font.render(content, True, color)
+    # text = font.render(content, True, color)
+    text = text_font.render(content, True, color)
     return text
 
 def import_assets(path: str, animation_package: list):
