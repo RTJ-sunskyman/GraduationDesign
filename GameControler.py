@@ -10,3 +10,6 @@ class GameControler:
     def update(self, client):
         self.map.update(client)
         self.seedbank.update()
+
+
+gameCtrler = GameControler('PLs')

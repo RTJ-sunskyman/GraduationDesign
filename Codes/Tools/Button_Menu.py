@@ -1,3 +1,5 @@
+import pygame
+
 from Codes.Basic.Config import *
 pygame.init()
 
@@ -8,8 +10,9 @@ class Button:
     def __init__(self, text, pos, size):
         # 核心属性
         self.response = 0
-        self.pressed = 1                 # pressed=1,一般状态；pressed=0,按下状态
+        self.pressed = 1                # pressed=1,一般状态；pressed=0,按下状态
         self.original_y_pos = pos[1]    # 原始y位置
+        self.text = text
 
         # 上矩形
         self.up_rect = pygame.Rect(pos, size)
@@ -19,16 +22,14 @@ class Button:
         self.dn_rect = pygame.Rect(pos, size)
         self.dn_color = '#354B5E'
 
-        # 按钮文字
-        self.text_surf = text_font.render(text, True, '#FFFFFF')
-        self.text_rect = self.text_surf.get_rect(center=self.up_rect.center)
-
     def update(self, screen):
         self.check_click()
         self.draw_status()
         pygame.draw.rect(screen, self.dn_color, self.dn_rect, border_radius=12)
         pygame.draw.rect(screen, self.up_color, self.up_rect, border_radius=12)
-        screen.blit(self.text_surf, self.text_rect)
+        text_surf = text_font.render(self.text, True, '#FFFFFF')
+        text_rect = text_surf.get_rect(center=self.up_rect.center)
+        screen.blit(text_surf, text_rect)
 
     def draw_status(self):
         """
@@ -40,7 +41,6 @@ class Button:
         """
         self.delta_h = self.pressed * 5
         self.up_rect.y = self.original_y_pos - self.delta_h
-        self.text_rect.center = self.up_rect.center
 
     def check_click(self):
         """

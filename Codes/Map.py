@@ -8,11 +8,12 @@ class Map:
         self.all_GRs = []
         self.all_ZCs = []
         self.all_PCs = []
-        # for i in range(5):
-        #     self.all_GRs.append(GrassRow(i))
-        #     self.all_ZCs.append(ZbiChain(i))
-        #     self.all_GRs[i].oppoZC = self.all_ZCs[i]
-        #     self.all_ZCs[i].oppoGR = self.all_GRs[i]
+        if GameData['MODE'] == 'PvE':
+            for i in range(5):
+                self.all_GRs.append(GrassRow(i))
+                self.all_ZCs.append(ZbiChain(i))
+                self.all_GRs[i].oppoZC = self.all_ZCs[i]
+                self.all_ZCs[i].oppoGR = self.all_GRs[i]
 
     def update(self, client):
         if GameData['MODE'] != 'PvE':

@@ -1,12 +1,10 @@
-from GameControler import *
+# from GameControler import *
 from Menu.MenuControler import *
-from Network.client import *
 # c = Client()
 
 pygame.init()
 pygame.display.set_caption("数媒1902丁昊天 - 毕业设计：PVZ")
 menuCtrler = MenuControler()
-# gameCtrler = GameControler('PLs')
 
 def main():
     while True:
@@ -22,8 +20,8 @@ def main():
         if GameData['MODE'] == 'menu':
             menuCtrler.update()
         elif GameData['MODE'] == 'PLs':
-            pass
             # gameCtrler.update(c)
+            pass
 
         # 总刷新与收尾
         pygame.display.flip()

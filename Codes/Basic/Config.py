@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 import sys
 import os
-from threading import Thread
+from threading import *
 
 # 固有数据
 SCR_size = (1280, 720)
@@ -18,7 +18,7 @@ text_font = pygame.font.Font('Assets/郑庆科黄油体.TTF', 20)
 GameData = {'MODE': 'menu',
             'Menu': 'self.menu_main',
             'money': 1000,
-            'pressed': 'self.gamerun',
+            'status': 'self.gamerun',
             'mouse_data': [[0, 0], 0],  # 0表示无行为；1表示按了一次左键；3表示按了一次右键
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
             'ZBs': [0, False, False],
