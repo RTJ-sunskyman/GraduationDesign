@@ -23,6 +23,7 @@ GameData = {'MODE': 'menu',
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
             'ZBs': [0, False, False],
             'zbai_data': 'run',
+            'client': None
             }
 
 # 便利函数

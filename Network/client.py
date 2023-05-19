@@ -1,20 +1,15 @@
 import socket
 import pickle
 
+host = "localhost"
+port = 5555
+
 class Client:
-    host = "localhost"
-    port = 5555
-    success = True
-
-    # step1：创建socket对象
-    c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     def __init__(self):
+        # step1：创建socket对象
+        self.c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # step2：发送连接请求
-        try:
-            self.c.connect((self.host, self.port))
-        except ConnectionRefusedError:
-            self.success = False
+        self.c.connect((host, port))
 
     def send(self, send):
         data = pickle.dumps(send)

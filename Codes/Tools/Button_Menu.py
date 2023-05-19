@@ -60,7 +60,7 @@ class Button:
                 self.pressed = 0
             # 当鼠标左键处于悬浮状态时，若pressed=true，说明左键弹起
             elif self.pressed == 0:
-                print('click')
+                # print('click')
                 self.response += 1
                 self.pressed = 1
         else:
