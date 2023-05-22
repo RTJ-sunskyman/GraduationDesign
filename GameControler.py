@@ -2,14 +2,10 @@ from Codes.Map import *
 from Codes.SeedBank import *
 
 class GameControler:
-    def __init__(self, Mode):
-        self.Mode = Mode
-        self.map = Map(Mode)
-        self.seedbank = SeedBank(Mode)
+    def __init__(self):
+        self.map = Map()
+        self.seedbank = SeedBank()
 
-    def update(self, client):
-        self.map.update(client)
+    def update(self):
+        self.map.update()
         self.seedbank.update()
-
-
-gameCtrler = GameControler('PLs')

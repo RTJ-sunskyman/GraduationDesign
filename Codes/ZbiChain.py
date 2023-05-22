@@ -64,11 +64,11 @@ class ZbiChain:
                 return False
             aPL = self.oppoGR.PLs[acol]
             if aPL is None:
-                aZB.pressed = 'walk'
+                aZB.status = 'walk'
                 return False
             elif not isinstance(aPL, Grave):
                 if aZB.isCollideRect(aPL):
-                    aZB.pressed = 'eat'
+                    aZB.status = 'eat'
                     aPL.HP -= aZB.ATK
                     return True
 

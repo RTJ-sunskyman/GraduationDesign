@@ -1,12 +1,13 @@
-# from GameControler import *
+from GameControler import *
 from Menu.MenuControler import *
-# c = Client()
 
 pygame.init()
 pygame.display.set_caption("数媒1902丁昊天 - 毕业设计：PVZ")
 menuCtrler = MenuControler()
+gameCtrler = None
 
 def main():
+    global gameCtrler
     while True:
         SCR.fill('white')
         GameData['mouse_data'][0] = pygame.mouse.get_pos()
@@ -17,11 +18,13 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 GameData['mouse_data'][1] = event.button
 
+        record = GameData['MODE']
         if GameData['MODE'] == 'menu':
             menuCtrler.update()
-        elif GameData['MODE'] == 'PLs':
-            # gameCtrler.update(c)
-            pass
+        else:
+            gameCtrler.update()
+        if record == 'menu' and GameData['MODE'] != 'menu':
+            gameCtrler = GameControler()
 
         # 总刷新与收尾
         pygame.display.flip()

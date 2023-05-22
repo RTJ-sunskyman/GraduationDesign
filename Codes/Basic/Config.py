@@ -1,9 +1,9 @@
 import pygame
-pygame.init()
 import sys
 import os
 from threading import *
 
+pygame.init()
 # 固有数据
 SCR_size = (1280, 720)
 SCR = pygame.display.set_mode(SCR_size)
@@ -23,7 +23,8 @@ GameData = {'MODE': 'menu',
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
             'ZBs': [0, False, False],
             'zbai_data': 'run',
-            'client': None
+            'client': None,
+            'server': None
             }
 
 # 便利函数
@@ -80,10 +81,14 @@ def r_c2p(r: int, c: int) -> [int, int]:
     return MAP_X1+(c+0.5)*C_W, MAP_Y1+(r+0.5)*C_H
 
 def QUIT():
+    if GameData['server'] is not None:
+        GameData['server'] = None
+    if GameData['client'] is not None:
+        GameData['client'] = None
     pygame.quit()
     sys.exit()
 
-# 自定义类
+# 自定义精灵类
 class mySprite:
     anime_path = ''
     amine_speed = 0.1

@@ -9,15 +9,15 @@ class SeedBank:
     cards = []
     bank_imag_path = 'assets/SeedBank/SeedBank.png'
 
-    def __init__(self, Mode):
-        self.type = Mode
-        allcards = PLs if Mode == 'PLs' else ZBs
+    def __init__(self):
+        self.type = GameData['MODE']
+        allcards = PLs if self.type == 'PLs' else ZBs
         # 加载卡片
         for i in range(len(allcards)):
             card_name = allcards[i]
             x, y = self.cards_topleft
             topleft = [x+50*i, y]
-            self.cards.append(Card(Mode, card_name, topleft, i))
+            self.cards.append(Card(self.type, card_name, topleft, i))
         # 加载箭头
         self.arrow = Arrow(self.arrow_topleft)
 

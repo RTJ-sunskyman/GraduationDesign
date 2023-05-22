@@ -15,11 +15,11 @@ class GrassRow:
         self.oppoZC = None
         self.oppoPC = None
 
-    def update(self, Mode):
+    def update(self):
         # 植物和墓碑更新
         self.update_pls_gvs()
 
-        if Mode == 'PLs':
+        if GameData['MODE'] == 'PLs':
             # 阳光更新
             self.update_suns()
 
@@ -79,7 +79,7 @@ class GrassRow:
             if GameData['money'] >= ZBs[ZBid].cost:  # 确保阳光充足
                 # 建墓碑和造僵尸主体
                 if ZBid == 0:
-                    self.PLs[acol] = Grave(acol)
+                    self.PLs[acol] = Grave(r_c2p(self.row, acol))
                 else:
                     self.oppoZC.insert(acol)
                 GameData['money'] -= ZBs[ZBid].cost
@@ -88,8 +88,6 @@ class GrassRow:
                 Thread(target=play_music('assets/音乐音效/error_cost.wav')).start()
         else:
             Thread(target=play_music('assets/音乐音效/error_cold.mp3')).start()
-
-        self.PLs[acol] = Grave(r_c2p(self.row, acol))
 
     def add_plant(self, acol):
         # 确保当前格子无对象

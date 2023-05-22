@@ -1,7 +1,6 @@
-import socket
 from socket import *
 import pickle
-# from Codes.Map import *
+from Codes.Basic.Config import QUIT
 from Codes.GrassRow import GrassRow
 from Codes.ZbiChain import ZbiChain
 from Codes.PeaChain import PeaChain
@@ -21,20 +20,19 @@ class Server(Thread):
         self.s.bind((host, port))
         # step3：接收连接请求
         self.s.listen(2)
-        print("服务器开始监听，等待连接中...")
+        print("服务器开始监听:>>>")
 
     def run(self) -> None:
         # step4：等待连接
-        while True:
-            if len(self.conns) < 2:
-                try:
-                    conn, addr = self.s.accept()
-                except OSError:
-                    print("---已中断此次连接√---")
-                    break
-                self.conns.append(conn)
-            # self.check_client_conn()
-            print(f'已连接客户端{len(self.conns)}')
+        for i in range(2):
+            print('等待客户端连接...')
+            conn, addr = self.s.accept()
+            print(f'已连接：{i}号客户端')
+            self.conns.append(conn)
+        # step5：全部连接后，应当发出一个信号，更改各自游戏的模式
+        self.send(0, 'PLs')
+        self.send(1, 'ZBs')
+        self.gaming()
 
     def gaming(self):
         # 初始赋值
@@ -49,32 +47,21 @@ class Server(Thread):
         main_data = (all_GRs, all_ZCs, all_PCs)
         # 游戏中主交互
         while True:
-            self.send(1, main_data)
-            main_data = self.s.recv(1)
-            self.send(2, main_data)
-            main_data = self.s.recv(2)
-
-    def check_client_conn(self):
-        if len(self.conns) > 0:
-            for conn in self.conns:
-                try:
-                    conn.recv(1024)
-                except ConnectionResetError:
-                    self.conns.remove(conn)
-                    print("（注意：有客户端失去连接）")
-                    return False
-
-    def close(self):
-        for conn in self.conns:
-            conn.close()
-        self.s.close()
+            try:
+                self.send(0, main_data)
+                main_data = self.recv(0)
+                self.send(1, main_data)
+                main_data = self.recv(1)
+            except ConnectionResetError:
+                self.conns[0].close()
+                break
 
     def send(self, connid, send):
         data = pickle.dumps(send)
-        self.conns[connid-1].send(data)
+        self.conns[connid].send(data)
 
     def recv(self, connid):
-        data = self.conns[connid-1].recv(1024*1024*10)
+        data = self.conns[connid].recv(1024*1024*10)
         return pickle.loads(data)
 
 def is_port_occupied():

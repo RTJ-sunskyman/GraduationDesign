@@ -3,8 +3,7 @@ from Codes.GrassRow import *
 class Map:
     topleft = MAP_X1, MAP_Y1
 
-    def __init__(self, Mode):
-        self.Mode = Mode
+    def __init__(self):
         self.all_GRs = []
         self.all_ZCs = []
         self.all_PCs = []
@@ -15,14 +14,15 @@ class Map:
                 self.all_GRs[i].oppoZC = self.all_ZCs[i]
                 self.all_ZCs[i].oppoGR = self.all_GRs[i]
 
-    def update(self, client):
+    def update(self):
+        client = GameData['client']
         if GameData['MODE'] != 'PvE':
             self.all_GRs, self.all_ZCs, self.all_PCs = client.recv()
 
         self.update_cells()
         # 更新植物和僵尸
         for i in range(5):
-            self.all_GRs[i].update(self.Mode)
+            self.all_GRs[i].update()
             self.update_Peas_ZBs(i)
 
         if GameData['MODE'] != 'PvE':
@@ -39,9 +39,9 @@ class Map:
                 # 顺便检测该格是否被点击
                 if cell_rect.collidepoint(GameData['mouse_data'][0]):
                     if GameData['mouse_data'][1] == 1:
-                        if self.Mode == 'PLs':
+                        if GameData['MODE'] == 'PLs':
                             self.all_GRs[i].add_plant(j)
-                        elif self.Mode == 'ZBs':
+                        elif GameData['MODE'] == 'ZBs':
                             self.all_GRs[i].add_grave_or_zb(j)
                     elif GameData['mouse_data'][1] == 3:
                         self.all_GRs[i].dig(j)
