@@ -35,7 +35,8 @@ class GrassRow:
                     self.PLs[i] = None
                     continue
                 if isinstance(aobj, Peashooter):
-                    aobj.shoot(self.oppoPC, self.oppoZC)
+                    hasgrave = True if self.PLs[9] is not None else False
+                    aobj.shoot(self.oppoPC, self.oppoZC, hasgrave)
                 elif isinstance(aobj, Sunflower):
                     aobj.produce(self.Suns)
             if isinstance(aobj, Grave):
@@ -49,7 +50,7 @@ class GrassRow:
         dieSuns = []  # 待清除的阳光名单
         for aSun in self.Suns:
             if aSun.rect.collidepoint(GameData['mouse_data'][0]):
-                GameData['money'] += 25
+                GameData['money_pl'] += 25
                 dieSuns.append(aSun)
             else:
                 aSun.update(SCR)
@@ -63,7 +64,8 @@ class GrassRow:
         ZBid = GameData['ZBs'][0]
         # 选的是墓碑
         if ZBid == 0:
-            if acol < 9 and not isinstance(self.PLs[acol+1], Grave):
+            if acol < 9 and not isinstance(self.PLs[acol+1], Grave) \
+                    or acol == 9:
                 print("建墓碑必须确保右侧有墓碑！")
                 return
             if self.PLs[acol] is not None:
@@ -76,13 +78,13 @@ class GrassRow:
                 return
 
         if GameData['ZBs'][ZBid + 1]:  # 确保充能完成
-            if GameData['money'] >= ZBs[ZBid].cost:  # 确保阳光充足
+            if GameData['money_zb'] >= ZBs[ZBid].cost:  # 确保阳光充足
                 # 建墓碑和造僵尸主体
                 if ZBid == 0:
                     self.PLs[acol] = Grave(r_c2p(self.row, acol))
                 else:
                     self.oppoZC.insert(acol)
-                GameData['money'] -= ZBs[ZBid].cost
+                GameData['money_zb'] -= ZBs[ZBid].cost
                 GameData['ZBs'][ZBid + 1] = False
             else:
                 Thread(target=play_music('assets/音乐音效/error_cost.wav')).start()
@@ -96,10 +98,10 @@ class GrassRow:
             # 确保充能完成
             if GameData['PLs'][PLid+1]:
                 # 确保阳光充足
-                if GameData['money'] >= PLs[PLid].cost:
+                if GameData['money_pl'] >= PLs[PLid].cost:
                     pos = MAP_X1 + (acol + 0.5) * C_W, MAP_Y1 + (self.row + 0.5) * C_H
                     self.PLs[acol] = PLs[PLid](pos)
-                    GameData['money'] -= PLs[PLid].cost
+                    GameData['money_pl'] -= PLs[PLid].cost
                     GameData['PLs'][PLid+1] = False
                 else:
                     Thread(target=play_music('assets/音乐音效/error_cost.wav')).start()

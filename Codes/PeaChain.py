@@ -1,4 +1,5 @@
 from Codes.Basic.Plants import *
+from Codes.Basic.Zombies import Grave
 
 class PeaNode:
     def __init__(self, aPea: Pea):
@@ -24,9 +25,31 @@ class PeaChain:
         self.size = 0
         self.row = arow
 
-    def check_reach_R(self, aPeaN: PeaNode):
+    def check_pea_reachR(self, aPeaN: PeaNode):
         if aPeaN.x() > MAP_X2 + C_W:
             self.delete(aPeaN)
+
+    @staticmethod
+    def check_pea_atkGrave(aPea: Pea, pls):
+        # 由该豌豆的位置定位到格子id，再判断该格左中右三格的碰撞
+        i = int((aPea.pos.x - MAP_X1) // C_W)
+
+        def func(acol: int) -> bool:
+            if not 0 <= acol <= 9:
+                return False
+            aobj = pls[acol]
+            if isinstance(aobj, Grave):
+                if aobj.isCollideRect(aPea):
+                    aPea.HP -= 1
+                    aobj.HP -= aPea.ATK
+                    return True
+            else:
+                return False
+
+        if 0 <= i <= 9:
+            for delta in [-1, 0, 1]:
+                if func(i - delta):
+                    break
 
     def insert(self, aPea):
         newNode = PeaNode(aPea)

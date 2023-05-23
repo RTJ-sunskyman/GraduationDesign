@@ -1,11 +1,12 @@
 from Codes.Basic.Config import *
 
 class Box_reset_quit:
-    def __init__(self, pos):
+    def __init__(self, msg, pos):
         self.scr = pygame.display.get_surface()
         self.img_bottom = pygame.image.load('assets/其他图片/提示框.png')
         self.rect_bottom = self.img_bottom.get_rect(center=pos)
 
+        self.text_msg = draw_text(msg, 25, '#ff5a27')
         self.text_reset = draw_text('重开', 18, 'black')
         self.text_quit = draw_text('退出', 18, 'white')
 
@@ -17,17 +18,14 @@ class Box_reset_quit:
         if mouse_data[1] == 1:
             mouse_pos = mouse_data[0]
             if self.rect1.collidepoint(mouse_pos):
-                print('重开')
-                pygame.quit()
-                os.system('main.py')
-                sys.exit()
+                QUIT()
             if self.rect2.collidepoint(mouse_pos):
-                pygame.quit()
-                sys.exit()
+                QUIT()
 
     def update(self, mouse_data: [[int, int], int]):
         self.check_click(mouse_data)
         # 先把文字绘制到图片上
+        self.img_bottom.blit(self.text_msg, (110, 55))
         self.img_bottom.blit(self.text_reset, (80, 150))
         self.img_bottom.blit(self.text_quit, (210, 150))
         # 再绘制图片

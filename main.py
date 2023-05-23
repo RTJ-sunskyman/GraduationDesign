@@ -25,6 +25,10 @@ def main():
             gameCtrler.update()
         if record == 'menu' and GameData['MODE'] != 'menu':
             gameCtrler = GameControler()
+            if GameData['MODE'] == 'PLs':
+                GameData['money_pl'] = 50
+            if GameData['MODE'] == 'ZBs':
+                GameData['money_zb'] = 1000
 
         # 总刷新与收尾
         pygame.display.flip()

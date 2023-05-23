@@ -1,7 +1,7 @@
 from Codes.Basic.Config import *
 
 class Plant(mySprite):
-    HP = 4000
+    HP = 400
     anime_speed = 0.2
 
 class Peashooter(Plant):
@@ -16,10 +16,11 @@ class Peashooter(Plant):
         x, y = pos
         self.rect = pygame.Rect(x-50+15, y-50+20, 63, 70)
 
-    def shoot(self, peaset, azbc):
-        # 判断是否需要射击，只需要判断队尾
-        if azbc.size > 0 \
-                and self.pos.x <= azbc.tailZB().pos.x:
+    def shoot(self, peaset, azbc, hasgrave):
+        # 判断是否需要射击
+        # 要么僵尸表队尾僵尸在豌豆射手右边；要么本行有墓碑（只需要判断第十格有没有墓碑）
+        if (azbc.size > 0 and self.pos.x <= azbc.tailZB().pos.x) \
+                or hasgrave:
             self.t -= 1
 
         if self.t == 0:

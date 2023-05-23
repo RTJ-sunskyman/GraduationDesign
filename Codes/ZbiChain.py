@@ -55,7 +55,10 @@ class ZbiChain:
         aZBnode.next.prev = aZBnode.prev
         self.size -= 1
 
-    def check_zb_eatpl(self, aZB):
+    def check_zb_eatpl(self, aZB: Zombie):
+        if aZB.status == 'eat':
+            return
+
         # 由该僵尸的位置定位到格子id，再判断该格左中右三格的碰撞
         i = int((aZB.pos.x - MAP_X1) // C_W)
 
@@ -64,15 +67,20 @@ class ZbiChain:
                 return False
             aPL = self.oppoGR.PLs[acol]
             if aPL is None:
-                aZB.status = 'walk'
                 return False
             elif not isinstance(aPL, Grave):
                 if aZB.isCollideRect(aPL):
                     aZB.status = 'eat'
-                    aPL.HP -= aZB.ATK
+                    aZB.thepl_eating = aPL
                     return True
 
         if 0 <= i <= 8:
             for delta in [-1, 0, 1]:
                 if func(i - delta):
                     break
+
+    def check_zb_reachL(self):
+        if self.size > 0 and self.headZB().rect.right < MAP_X1:
+            return True
+        else:
+            return False

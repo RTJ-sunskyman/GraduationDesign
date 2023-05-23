@@ -49,24 +49,32 @@ class Map:
     def update_Peas_ZBs(self, i):
         A, B = self.all_PCs[i], self.all_ZCs[i]
         pN1, pN2 = A.headN.next, B.headN.next
+        if B.check_zb_reachL():
+            if GameData['MODE'] == 'PLs':
+                GameData['MODE'] = 'lose'
+            elif GameData['MODE'] == 'ZBs':
+                GameData['MODE'] = 'win'
         while True:
             # 若二者有碰撞，双方互相攻击，血量<0的被删除
             if pN2.data.isCollideRect(pN1.data):
                 pN1.data.HP -= pN2.data.ATK
                 pN2.data.HP -= pN1.data.ATK
-                if pN1.data.HP <= 0:
-                    A.delete(pN1)
-                    pN1 = pN1.next
-                if pN2.data.HP <= 0:
-                    B.delete(pN2)
-                    pN2 = pN2.next
+            if pN1.data.HP <= 0:
+                A.delete(pN1)
+                pN1 = pN1.next
+            if pN2.data.HP <= 0:
+                B.delete(pN2)
+                pN2 = pN2.next
             # 若二者无碰撞，靠左的对象先被检测
             # 检测豌豆
             if pN1.x() <= pN2.x():
                 # 若豌豆表的尾结点都比僵尸表的更左，说明二者都到了头，结束遍历
                 if pN1.x() == A.tailN.x():
                     break
-                A.check_reach_R(pN1)
+                # 检查豌豆抵达最右
+                A.check_pea_reachR(pN1)
+                # 检测豌豆攻击墓碑
+                A.check_pea_atkGrave(pN1.data, self.all_GRs[i].PLs)
                 pN1.data.update(SCR)
                 pN1 = pN1.next
             # 检测僵尸
@@ -74,6 +82,11 @@ class Map:
                 # 若遍历到僵尸表的尾结点，说明僵尸表到头，不必再管僵尸
                 if pN2.x() == B.tailN.x():
                     continue
+                # 检查僵尸啃食植物
                 B.check_zb_eatpl(pN2.data)
+                # 僵尸击杀植物获得阳光（很捞的解决办法）
+                if pN2.data.exp > 0:
+                    GameData['money_zb'] += pN2.data.exp
+                    pN2.data.exp = 0
                 pN2.data.update(SCR)
                 pN2 = pN2.next

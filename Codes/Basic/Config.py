@@ -17,7 +17,8 @@ text_font = pygame.font.Font('Assets/郑庆科黄油体.TTF', 20)
 # 动态数据
 GameData = {'MODE': 'menu',
             'Menu': 'self.menu_main',
-            'money': 1000,
+            # 'money_pl': 50,
+            # 'money_zb': 1000,
             'status': 'self.gamerun',
             'mouse_data': [[0, 0], 0],  # 0表示无行为；1表示按了一次左键；3表示按了一次右键
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
