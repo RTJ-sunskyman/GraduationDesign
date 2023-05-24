@@ -17,13 +17,12 @@ text_font = pygame.font.Font('Assets/郑庆科黄油体.TTF', 20)
 # 动态数据
 GameData = {'MODE': 'menu',
             'Menu': 'self.menu_main',
-            # 'money_pl': 50,
-            # 'money_zb': 1000,
+            'money_pl': 50,
+            'money_zb': 1000,
             'status': 'self.gamerun',
             'mouse_data': [[0, 0], 0],  # 0表示无行为；1表示按了一次左键；3表示按了一次右键
             'PLs': [0, False, False, False],  # 0位表示当前选择的卡片，后面表示卡片是否充能完成
             'ZBs': [0, False, False],
-            'zbai_data': 'run',
             'client': None,
             'server': None
             }
@@ -47,10 +46,10 @@ def play_music(musicpath: str):
     :param musicpath: 文件路径
     :return: 无
     """
-    pygame.mixer.init()
-    pygame.mixer.music.load(musicpath)
-    pygame.mixer.music.set_volume(1)
-    pygame.mixer.music.play()
+    # pygame.mixer.init()
+    sound = pygame.mixer.Sound(musicpath)
+    sound.set_volume(1)
+    sound.play()
 
 def draw_text(content: str, size: int, color) -> pygame.Surface:
     """
@@ -92,7 +91,7 @@ def QUIT():
 # 自定义精灵类
 class mySprite:
     anime_path = ''
-    amine_speed = 0.1
+    amine_speed = 0.2
 
     def __init__(self, pos, status='0', animations=None):
         # 动画相关
@@ -132,3 +131,15 @@ class mySprite:
         else:
             print('使用该方法必须二者都具有rect属性！')
 
+# 背景音乐类
+class Music_bg(Thread):
+    music = None
+
+    def run(self) -> None:
+        music_path = 'Assets/音乐音效/Old Threads.mp3'
+        self.music = pygame.mixer.Sound(music_path)
+        self.music.set_volume(0.3)
+        self.music.play(-1)
+
+
+music_bg = Music_bg()

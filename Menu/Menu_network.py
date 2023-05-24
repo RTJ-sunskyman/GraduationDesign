@@ -16,14 +16,12 @@ class Button_send(Button):
 
 
 class Menu_network:
-    but_send = Button_send("开始连接", (300, 100), (300, 50))
-    but_ok = Button("确定并开始游戏", (300, 300), (200, 60))
-    but_cancel = Button("取消连接", (300, 500), (200, 60))
-    but_Back = Button("返回", (10, 10), (50, 50))
+    but_send = Button_send("开始连接", (640, 460), (300, 50))
+    but_Back = Button("返回", (50, 50), (50, 50))
     buttons = [but_send, but_Back]
 
     def update(self):
-        SCR.fill('#c4ff8d')
+        # SCR.fill('#c4ff8d')
         for button in self.buttons:
             if button.response == 1:
                 button.response -= 1

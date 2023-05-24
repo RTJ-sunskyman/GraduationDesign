@@ -1,5 +1,3 @@
-import pygame
-
 from Codes.Basic.Config import *
 pygame.init()
 
@@ -16,10 +14,12 @@ class Button:
 
         # 上矩形
         self.up_rect = pygame.Rect(pos, size)
+        self.up_rect.center = pos
         self.up_color = '#475F77'
 
         # 下矩形
         self.dn_rect = pygame.Rect(pos, size)
+        self.dn_rect.center = pos
         self.dn_color = '#354B5E'
 
     def update(self, screen):
@@ -40,7 +40,7 @@ class Button:
         不按为状态2，按下时为状态1
         """
         self.delta_h = self.pressed * 5
-        self.up_rect.y = self.original_y_pos - self.delta_h
+        self.up_rect.centery = self.original_y_pos - self.delta_h
 
     def check_click(self):
         """
@@ -61,6 +61,7 @@ class Button:
             # 当鼠标左键处于悬浮状态时，若pressed=true，说明左键弹起
             elif self.pressed == 0:
                 # print('click')
+                Thread(target=play_music('Assets/音乐音效/button.ogg')).start()
                 self.response += 1
                 self.pressed = 1
         else:

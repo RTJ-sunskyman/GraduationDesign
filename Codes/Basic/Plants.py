@@ -3,13 +3,13 @@ from Codes.Basic.Config import *
 class Plant(mySprite):
     HP = 400
     anime_speed = 0.2
+    cold_time = 60
 
 class Peashooter(Plant):
     anime_path = 'assets/资源_植物相关/Plant_peashooter'
     shoot_interval = 150
     t = 1
     cost = 100
-    cold_time = 100
 
     def __init__(self, pos):
         super().__init__(pos)
@@ -30,7 +30,7 @@ class Peashooter(Plant):
 
 class Pea:
     imag_path = 'assets/资源_植物相关/Pea.png'
-    fly_speed = 4
+    fly_speed = 10
     ATK = 100
 
     def __init__(self, pos):
@@ -58,7 +58,6 @@ class Sunflower(Plant):
     produce_interval = 200
     t = produce_interval
     cost = 50
-    cold_time = 70
 
     def __init__(self, pos):
         super().__init__(pos)

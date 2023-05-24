@@ -11,8 +11,10 @@ class Map:
             for i in range(5):
                 self.all_GRs.append(GrassRow(i))
                 self.all_ZCs.append(ZbiChain(i))
+                self.all_PCs.append(PeaChain(i))
                 self.all_GRs[i].oppoZC = self.all_ZCs[i]
                 self.all_ZCs[i].oppoGR = self.all_GRs[i]
+                self.all_GRs[i].oppoPC = self.all_PCs[i]
 
     def update(self):
         client = GameData['client']
@@ -21,12 +23,23 @@ class Map:
 
         self.update_cells()
         # 更新植物和僵尸
+        over = True
         for i in range(5):
             self.all_GRs[i].update()
+            over = over and self.all_GRs[i].noGrave
             self.update_Peas_ZBs(i)
 
-        if GameData['MODE'] != 'PvE':
+        if GameData['MODE'] != 'PvE' and GameData['MODE'] != 'lose':
             client.send((self.all_GRs, self.all_ZCs, self.all_PCs))
+
+        # 每行的墓碑都被清除，游戏结束
+        if over:
+            if GameData['MODE'] == 'PLs':
+                GameData['MODE'] = 'win'
+                music_bg.music.stop()
+            elif GameData['MODE'] == 'ZBs':
+                GameData['MODE'] = 'lose'
+                music_bg.music.stop()
 
     def update_cells(self):
         for i in range(5):
@@ -39,21 +52,25 @@ class Map:
                 # 顺便检测该格是否被点击
                 if cell_rect.collidepoint(GameData['mouse_data'][0]):
                     if GameData['mouse_data'][1] == 1:
-                        if GameData['MODE'] == 'PLs':
-                            self.all_GRs[i].add_plant(j)
-                        elif GameData['MODE'] == 'ZBs':
+                        if GameData['MODE'] == 'ZBs':
                             self.all_GRs[i].add_grave_or_zb(j)
+                        else:
+                            self.all_GRs[i].add_plant(j)
                     elif GameData['mouse_data'][1] == 3:
                         self.all_GRs[i].dig(j)
 
     def update_Peas_ZBs(self, i):
         A, B = self.all_PCs[i], self.all_ZCs[i]
         pN1, pN2 = A.headN.next, B.headN.next
+        # 僵尸走到最左游戏结束
         if B.check_zb_reachL():
-            if GameData['MODE'] == 'PLs':
-                GameData['MODE'] = 'lose'
-            elif GameData['MODE'] == 'ZBs':
+            if GameData['MODE'] == 'ZBs':
                 GameData['MODE'] = 'win'
+                music_bg.music.stop()
+            else:
+                GameData['MODE'] = 'lose'
+                music_bg.music.stop()
+        # 更新主体代码
         while True:
             # 若二者有碰撞，双方互相攻击，血量<0的被删除
             if pN2.data.isCollideRect(pN1.data):

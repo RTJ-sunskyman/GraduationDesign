@@ -11,7 +11,7 @@ class SeedBank:
     bank_imag_path = 'assets/SeedBank/SeedBank.png'
 
     def __init__(self):
-        self.type = GameData['MODE']
+        self.type = 'ZBs' if GameData['MODE'] == 'ZBs' else 'PLs'
         allcards = PLs if self.type == 'PLs' else ZBs
         # 加载卡片
         for i in range(len(allcards)):

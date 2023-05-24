@@ -9,7 +9,8 @@ gameCtrler = None
 def main():
     global gameCtrler
     while True:
-        SCR.fill('white')
+        img_bg = pygame.image.load('Assets/其他图片/菜单背景.png')
+        SCR.blit(img_bg, (0, 0))
         GameData['mouse_data'][0] = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -22,13 +23,15 @@ def main():
         if GameData['MODE'] == 'menu':
             menuCtrler.update()
         else:
+            SCR.fill('white')
             gameCtrler.update()
         if record == 'menu' and GameData['MODE'] != 'menu':
             gameCtrler = GameControler()
-            if GameData['MODE'] == 'PLs':
-                GameData['money_pl'] = 50
+            music_bg.start()
             if GameData['MODE'] == 'ZBs':
                 GameData['money_zb'] = 1000
+            else:
+                GameData['money_pl'] = 500
 
         # 总刷新与收尾
         pygame.display.flip()

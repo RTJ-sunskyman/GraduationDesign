@@ -1,8 +1,8 @@
 from Codes.Basic.Config import *
 
 class Zombie(mySprite):
-    amine_speed = 0.1
-    walk_speed = 1
+    amine_speed = 0.3
+    walk_speed = 2
     HP = 300  # 血量
     ATK = 10
 
@@ -50,6 +50,11 @@ class Grave(mySprite):
 
     def import_assets(self):
         self.animations['0'].append(self.anime_path)
+
+    def animate(self, screen):
+        image = pygame.image.load(self.anime_path).convert_alpha()
+        rect = image.get_rect(center=self.pos)
+        screen.blit(image, rect)
 
 
 ZBs = (Grave, ZB_normal)

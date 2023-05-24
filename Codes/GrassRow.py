@@ -14,12 +14,14 @@ class GrassRow:
         # 对应的僵尸队列
         self.oppoZC = None
         self.oppoPC = None
+        # 游戏结束标志
+        self.noGrave = False
 
     def update(self):
         # 植物和墓碑更新
         self.update_pls_gvs()
 
-        if GameData['MODE'] == 'PLs':
+        if GameData['MODE'] != 'ZBs':
             # 阳光更新
             self.update_suns()
 
@@ -30,6 +32,9 @@ class GrassRow:
         # 格内更新
         for i in range(10):
             aobj = self.PLs[i]
+            if i == 9 and aobj is None:
+                self.noGrave = True
+                break
             if isinstance(aobj, Plant):
                 if aobj.HP <= 0:
                     self.PLs[i] = None
@@ -115,7 +120,7 @@ class GrassRow:
 
 class LawnCleaner(mySprite):
     anime_path = 'assets/LawnCleaner.png'
-    run_speed = 5
+    run_speed = 15
 
     def __init__(self, row):
         pos = 0, MAP_X1 + row * C_H
