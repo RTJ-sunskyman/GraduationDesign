@@ -52,7 +52,7 @@ class Server(Thread):
                 main_data = self.recv(0)
                 self.send(1, main_data)
                 main_data = self.recv(1)
-            except ConnectionResetError:
+            except:
                 self.conns[0].close()
                 break
 

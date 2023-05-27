@@ -17,29 +17,32 @@ class Map:
                 self.all_GRs[i].oppoPC = self.all_PCs[i]
 
     def update(self):
-        client = GameData['client']
-        if GameData['MODE'] != 'PvE':
-            self.all_GRs, self.all_ZCs, self.all_PCs = client.recv()
+        try:
+            client = GameData['client']
+            if GameData['MODE'] != 'PvE':
+                self.all_GRs, self.all_ZCs, self.all_PCs = client.recv()
 
-        self.update_cells()
-        # 更新植物和僵尸
-        over = True
-        for i in range(5):
-            self.all_GRs[i].update()
-            over = over and self.all_GRs[i].noGrave
-            self.update_Peas_ZBs(i)
+            self.update_cells()
+            # 更新植物和僵尸
+            over = True
+            for i in range(5):
+                self.all_GRs[i].update()
+                over = over and self.all_GRs[i].noGrave
+                self.update_Peas_ZBs(i)
 
-        if GameData['MODE'] != 'PvE' and GameData['MODE'] != 'lose':
-            client.send((self.all_GRs, self.all_ZCs, self.all_PCs))
+            if GameData['MODE'] != 'PvE' and GameData['MODE'] != 'lose':
+                client.send((self.all_GRs, self.all_ZCs, self.all_PCs))
 
-        # 每行的墓碑都被清除，游戏结束
-        if over:
-            if GameData['MODE'] == 'PLs':
-                GameData['MODE'] = 'win'
-                music_bg.music.stop()
-            elif GameData['MODE'] == 'ZBs':
-                GameData['MODE'] = 'lose'
-                music_bg.music.stop()
+            # 每行的墓碑都被清除，游戏结束
+            if over:
+                if GameData['MODE'] == 'PLs':
+                    GameData['MODE'] = 'win'
+                    music_bg.music.stop()
+                elif GameData['MODE'] == 'ZBs':
+                    GameData['MODE'] = 'lose'
+                    music_bg.music.stop()
+        except:
+            QUIT()
 
     def update_cells(self):
         for i in range(5):
