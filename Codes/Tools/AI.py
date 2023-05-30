@@ -49,12 +49,17 @@ class ZBAI:
             else:
                 self.time = 0
                 self.status = 'tide'
+                self.clock = 25
         # 正式最后一波
         elif self.status == 'tide':
-            self.clock = 50
-            self.tick()
-            if self.time > 2000:
-                self.status = 'over'
+            if self.time < 500:
+                self.tick()
+            else:
+                for i in range(5):
+                    if self.map.all_ZCs[i].size > 0:
+                        break
+                else:
+                    self.status = 'over'
 
 
 # 自然生成阳光AI

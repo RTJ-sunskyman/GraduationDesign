@@ -19,7 +19,7 @@ class Map:
     def update(self):
         try:
             client = GameData['client']
-            if GameData['MODE'] != 'PvE':
+            if GameData['MODE'] == 'PLs' or GameData['MODE'] == 'ZBs':
                 self.all_GRs, self.all_ZCs, self.all_PCs = client.recv()
 
             self.update_cells()
@@ -30,7 +30,7 @@ class Map:
                 over = over and self.all_GRs[i].noGrave
                 self.update_Peas_ZBs(i)
 
-            if GameData['MODE'] != 'PvE' and GameData['MODE'] != 'lose':
+            if GameData['MODE'] != 'PvE':
                 client.send((self.all_GRs, self.all_ZCs, self.all_PCs))
 
             # 每行的墓碑都被清除，游戏结束

@@ -92,9 +92,9 @@ class GrassRow:
                 GameData['money_zb'] -= ZBs[ZBid].cost
                 GameData['ZBs'][ZBid + 1] = False
             else:
-                Thread(target=play_music('assets/音乐音效/error_cost.wav')).start()
+                Thread(target=play_music('Assets/音乐音效/error_cost.wav')).start()
         else:
-            Thread(target=play_music('assets/音乐音效/error_cold.mp3')).start()
+            Thread(target=play_music('Assets/音乐音效/error_cold.mp3')).start()
 
     def add_plant(self, acol):
         # 确保当前格子无对象
@@ -119,7 +119,7 @@ class GrassRow:
         self.PLs[acol] = None
 
 class LawnCleaner(mySprite):
-    anime_path = 'assets/LawnCleaner.png'
+    anime_path = 'Assets/LawnCleaner.png'
     run_speed = 15
 
     def __init__(self, row):
